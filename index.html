@@ -3,72 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Someone Special</title>
+    <title>Sraboni</title>
     <style>
+        /* Lovely Pink Theme */
         body {
             margin: 0;
             padding: 0;
             background-color: #ffdae0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
             text-align: center;
+            overflow-x: hidden;
         }
 
         .container {
             width: 90%;
-            max-width: 500px;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(214, 51, 132, 0.2);
+            border: 2px solid #f8bbd0;
         }
 
-        .page { display: none; animation: fadeIn 1.5s ease-in-out; }
+        /* Page Transitions */
+        .page { display: none; animation: slideUp 1s ease-out; }
         .active { display: block; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1 { color: #d63384; line-height: 1.5; font-size: 24px; }
+        h1 { color: #d63384; line-height: 1.4; font-size: 22px; margin-bottom: 20px; }
+        p { color: #444; line-height: 1.8; font-size: 17px; margin-bottom: 25px; }
         
         button {
-            background-color: #ff4d6d;
+            background: linear-gradient(45deg, #ff4d6d, #ff758c);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
+            padding: 14px 30px;
+            border-radius: 50px;
             cursor: pointer;
             font-size: 18px;
-            margin: 10px;
+            font-weight: 600;
             transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
         }
 
-        button:hover { background-color: #c9184a; transform: scale(1.05); }
+        button:hover { transform: scale(1.05); background: #c9184a; }
 
-        #noBtn { position: relative; transition: all 0.2s ease; z-index: 100; }
+        #noBtn { position: relative; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 999; }
 
-        video { width: 100%; border-radius: 15px; margin-bottom: 15px; border: 2px solid #ffdae0; }
+        video { 
+            width: 100%; 
+            border-radius: 20px; 
+            margin-bottom: 20px; 
+            border: 5px solid #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
 
-        .final-msg { font-size: 18px; font-weight: bold; color: #555; line-height: 1.6; }
+        .final-msg { 
+            font-size: 18px; 
+            color: #d63384; 
+            font-weight: 500; 
+            background: #fff0f3;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid #ff4d6d;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
         <div id="page1" class="page active">
-            <h1> I have something to tell you...</h1>
+            <h1>I have something to tell you...</h1>
+            <p>I don't know where to start or how. I might be a bit disorganized in how I say this, but I hope you’ll understand. Basically, I don't have anything new to say because I’ve already told you everything while sitting right in front of you; there’s nothing truly new to write here. <br><br>
+            But I want to say in my eyes, you are still that same little 'Srabu.' You will always be that person to me. Keep shining. You are still shining in my eyes. It becomes difficult for me to even blink. Perhaps I am still staring at you in that same way, without even blinking, haha. <br><br>
+            Anyway, I know what your answer will be, but I have still prepared a few things.</p>
             <button onclick="nextPage(2)">Continue </button>
         </div>
 
         <div id="page2" class="page">
-            <h1>Look at this...</h1>
-            <video controls id="myVideo">
+            <h1>pass my nights by doing these kind of stuff:)...</h1>
+            <video id="myVideo" controls>
                 <source src="video.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -78,24 +100,29 @@
 
         <div id="page3" class="page">
             <h1 id="questionText">I know the answer is likely no, but I had to take a chance and ask if you'd be my wife?</h1>
+            
             <div id="btnContainer">
                 <button id="yesBtn" onclick="handleYes()">Yes</button>
                 <button id="noBtn" onclick="handleNo()">No</button>
             </div>
-            <p id="finalResponse" class="final-msg"></p>
+
+            <div id="responseDisplay" style="display:none;">
+                <p id="finalResponse" class="final-msg"></p>
+            </div>
         </div>
     </div>
 
-    <audio id="bgMusic">
+    <audio id="mySong">
         <source src="Song.mp3" type="audio/mpeg">
     </audio>
 
     <script>
         let noClickCount = 0;
         const noTexts = ["Are you sure?", "Think once", "You’re everything", "Stay with me"];
+        const song = document.getElementById('mySong');
 
         function nextPage(pageNum) {
-            // Video pause logic when moving from page 2
+            // Pause video if moving to next page
             const video = document.getElementById('myVideo');
             if (pageNum === 3) video.pause();
 
@@ -104,13 +131,14 @@
         }
 
         function handleNo() {
-            let noBtn = document.getElementById('noBtn');
-            let questionText = document.getElementById('questionText');
+            const noBtn = document.getElementById('noBtn');
+            const question = document.getElementById('questionText');
 
             if (noClickCount < 4) {
-                // Button moves randomly within the screen
-                let x = Math.random() * (window.innerWidth - 150);
-                let y = Math.random() * (window.innerHeight - 100);
+                // Moving the button to random positions
+                const x = Math.random() * (window.innerWidth - 150);
+                const y = Math.random() * (window.innerHeight - 100);
+                
                 noBtn.style.position = "fixed";
                 noBtn.style.left = x + "px";
                 noBtn.style.top = y + "px";
@@ -118,18 +146,23 @@
                 noBtn.innerText = noTexts[noClickCount];
                 noClickCount++;
             } else {
-                // 5th click message
+                // 5th Click - Rejection Message
                 document.getElementById('btnContainer').style.display = "none";
-                questionText.innerText = "I respect your opinion. I haven’t given up on you, and i never will . I’ve been waiting for you , and i’ll keep waiting.";
+                question.innerHTML = "I respect your opinion. I haven’t given up on you, and i never will . I’ve been waiting for you , and i’ll keep waiting.";
+                question.style.fontSize = "18px";
+                question.style.color = "#555";
             }
         }
 
         function handleYes() {
-            const music = document.getElementById('bgMusic');
-            music.play().catch(e => console.log("Music play failed, usually needs user interaction first."));
+            // PLAY SONG - Important: This must be triggered by a click
+            song.play().catch(error => {
+                console.log("Auto-play blocked, but since this is a click, it should work!");
+            });
 
             document.getElementById('btnContainer').style.display = "none";
             document.getElementById('questionText').style.display = "none";
+            document.getElementById('responseDisplay').style.display = "block";
             
             document.getElementById('finalResponse').innerText = "I am honestly speechless right now. I was fully prepared for a 'no', but hearing you say 'yes' is the best feeling in the world. I promise to cherish your trust and make you happy every day. Getting you back is truly the biggest achievement of my life. I’m so excited for our future together.";
         }
