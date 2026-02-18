@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sraboni</title>
+    <title>For Srabu ❤️</title>
     <style>
         /* Lovely Pink Theme */
         body {
@@ -89,8 +89,8 @@
         </div>
 
         <div id="page2" class="page">
-            <h1>pass my nights by doing these kind of stuff:)...</h1>
-            <video id="myVideo" controls>
+            <h1>A little something for you...</h1>
+            <video id="myVideo" playsinline>
                 <source src="video.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -120,14 +120,23 @@
         let noClickCount = 0;
         const noTexts = ["Are you sure?", "Think once", "You’re everything", "Stay with me"];
         const song = document.getElementById('mySong');
+        const video = document.getElementById('myVideo');
 
         function nextPage(pageNum) {
-            // Pause video if moving to next page
-            const video = document.getElementById('myVideo');
-            if (pageNum === 3) video.pause();
-
+            // Hide all pages
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            // Show target page
             document.getElementById('page' + pageNum).classList.add('active');
+
+            if (pageNum === 2) {
+                // Play video automatically when 2nd page loads
+                video.play().catch(e => {
+                    console.log("Video autoplay blocked. User needs to interact with page 1 first.");
+                });
+            } else if (pageNum === 3) {
+                // Pause video if moving to next page
+                video.pause();
+            }
         }
 
         function handleNo() {
@@ -135,7 +144,6 @@
             const question = document.getElementById('questionText');
 
             if (noClickCount < 4) {
-                // Moving the button to random positions
                 const x = Math.random() * (window.innerWidth - 150);
                 const y = Math.random() * (window.innerHeight - 100);
                 
@@ -146,7 +154,6 @@
                 noBtn.innerText = noTexts[noClickCount];
                 noClickCount++;
             } else {
-                // 5th Click - Rejection Message
                 document.getElementById('btnContainer').style.display = "none";
                 question.innerHTML = "I respect your opinion. I haven’t given up on you, and i never will . I’ve been waiting for you , and i’ll keep waiting.";
                 question.style.fontSize = "18px";
@@ -155,9 +162,9 @@
         }
 
         function handleYes() {
-            // PLAY SONG - Important: This must be triggered by a click
+            // PLAY SONG
             song.play().catch(error => {
-                console.log("Auto-play blocked, but since this is a click, it should work!");
+                console.log("Music play error");
             });
 
             document.getElementById('btnContainer').style.display = "none";
@@ -169,3 +176,4 @@
     </script>
 </body>
 </html>
+
