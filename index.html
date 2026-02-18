@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Someone Special</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffdae0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .page { display: none; animation: fadeIn 1.5s ease-in-out; }
+        .active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { color: #d63384; line-height: 1.5; font-size: 24px; }
+        
+        button {
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 10px;
+            transition: 0.3s;
+        }
+
+        button:hover { background-color: #c9184a; transform: scale(1.05); }
+
+        #noBtn { position: relative; transition: all 0.2s ease; z-index: 100; }
+
+        video { width: 100%; border-radius: 15px; margin-bottom: 15px; border: 2px solid #ffdae0; }
+
+        .final-msg { font-size: 18px; font-weight: bold; color: #555; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="page1" class="page active">
+            <h1> I have something to tell you...</h1>
+            <button onclick="nextPage(2)">Continue </button>
+        </div>
+
+        <div id="page2" class="page">
+            <h1>Look at this...</h1>
+            <video controls id="myVideo">
+                <source src="video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <br>
+            <button onclick="nextPage(3)">Continue </button>
+        </div>
+
+        <div id="page3" class="page">
+            <h1 id="questionText">I know the answer is likely no, but I had to take a chance and ask if you'd be my wife?</h1>
+            <div id="btnContainer">
+                <button id="yesBtn" onclick="handleYes()">Yes</button>
+                <button id="noBtn" onclick="handleNo()">No</button>
+            </div>
+            <p id="finalResponse" class="final-msg"></p>
+        </div>
+    </div>
+
+    <audio id="bgMusic">
+        <source src="Song.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        let noClickCount = 0;
+        const noTexts = ["Are you sure?", "Think once", "You’re everything", "Stay with me"];
+
+        function nextPage(pageNum) {
+            // Video pause logic when moving from page 2
+            const video = document.getElementById('myVideo');
+            if (pageNum === 3) video.pause();
+
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page' + pageNum).classList.add('active');
+        }
+
+        function handleNo() {
+            let noBtn = document.getElementById('noBtn');
+            let questionText = document.getElementById('questionText');
+
+            if (noClickCount < 4) {
+                // Button moves randomly within the screen
+                let x = Math.random() * (window.innerWidth - 150);
+                let y = Math.random() * (window.innerHeight - 100);
+                noBtn.style.position = "fixed";
+                noBtn.style.left = x + "px";
+                noBtn.style.top = y + "px";
+                
+                noBtn.innerText = noTexts[noClickCount];
+                noClickCount++;
+            } else {
+                // 5th click message
+                document.getElementById('btnContainer').style.display = "none";
+                questionText.innerText = "I respect your opinion. I haven’t given up on you, and i never will . I’ve been waiting for you , and i’ll keep waiting.";
+            }
+        }
+
+        function handleYes() {
+            const music = document.getElementById('bgMusic');
+            music.play().catch(e => console.log("Music play failed, usually needs user interaction first."));
+
+            document.getElementById('btnContainer').style.display = "none";
+            document.getElementById('questionText').style.display = "none";
+            
+            document.getElementById('finalResponse').innerText = "I am honestly speechless right now. I was fully prepared for a 'no', but hearing you say 'yes' is the best feeling in the world. I promise to cherish your trust and make you happy every day. Getting you back is truly the biggest achievement of my life. I’m so excited for our future together.";
+        }
+    </script>
+</body>
+</html>
